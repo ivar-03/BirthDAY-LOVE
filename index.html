@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d081f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+  <title>Happiest Birthday Ashwu 🎂🌷</title>
+
+  <!-- Google Fonts for stylish typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       RESET & BASE STYLING (MOBILE-FIRST 100dvh)
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #050508;
+      color: #ffffff;
+      overflow-x: hidden;
+      transition: background 0.8s ease, color 0.8s ease;
+      position: relative;
+    }
+
+    body.pink-mode {
+      background: radial-gradient(circle at 50% 20%, #fff0f5 0%, #ffd6e7 45%, #fcaecc 100%);
+      color: #2d132c;
+    }
+
+    body.dark-mode {
+      background: radial-gradient(circle at 50% 30%, #1e113a 0%, #0d081f 55%, #05020c 100%);
+      color: #ffffff;
+    }
+
+    /* Ambient floating decorative items */
+    .bg-decorations {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.35;
+      animation: floatAround 6s infinite ease-in-out alternate;
+    }
+
+    @keyframes floatAround {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-25px) rotate(15deg); }
+    }
+
+    /* Fullscreen Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Global Touch / Click Sparkles */
+    .tap-sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 20px;
+      user-select: none;
+      animation: tapSparkleAnim 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    }
+
+    @keyframes tapSparkleAnim {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+      50% { opacity: 0.9; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2) rotate(45deg); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx) * 1.5), calc(-50% + var(--dy) - 30px)) scale(0.3) rotate(90deg); }
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-65px);
+      background: rgba(45, 19, 44, 0.94);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 117, 160, 0.45);
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================================================
+       SCENE SYSTEM (RESPONSIVE & MOBILE-FRIENDLY)
+       ========================================================= */
+    .scene {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: max(24px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom)) 16px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .scene.active {
+      display: flex !important;
+      animation: fadeInScene 0.45s ease forwards;
+    }
+
+    @keyframes fadeInScene {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Common Card */
+    .card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 26px;
+      padding: 24px 18px;
+      max-width: 440px;
+      width: 100%;
+      color: #2d132c;
+      box-shadow: 0 15px 35px rgba(224, 69, 123, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      position: relative;
+      margin: 10px 0;
+    }
+
+    /* Primary Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #ff75a0, #e0457b);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(224, 69, 123, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      user-select: none;
+      margin-top: 15px;
+      min-height: 48px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(224, 69, 123, 0.5);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.85);
+      color: #e0457b;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(224, 69, 123, 0.25);
+    }
+
+    /* =========================================================
+       STEP 1 — OPENING VIDEO
+       ========================================================= */
+    .video-wrapper {
+      position: relative;
+      width: clamp(190px, 55vw, 230px);
+      height: clamp(190px, 55vw, 230px);
+      margin-bottom: 22px;
+      border-radius: 50%;
+      padding: 5px;
+      background: conic-gradient(from 0deg, #ff75a0, #fcd34d, #a78bfa, #ff75a0);
+      box-shadow: 0 0 35px rgba(255, 117, 160, 0.7);
+      animation: popZoom 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .video-wrapper:hover {
+      transform: scale(1.04);
+    }
+
+    @keyframes popZoom {
+      0% { transform: scale(0.2); opacity: 0; }
+      70% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .video-wrapper video {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 3px solid #ffffff;
+      background: #111;
+    }
+
+    .target-badge {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: #fcd34d;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 12px;
+      border: 1px solid #fcd34d;
+      white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      transition: all 0.2s;
+    }
+
+    .step1-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 6vw, 30px);
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .step1-sub {
+      font-size: clamp(17px, 4.5vw, 21px);
+      font-weight: 600;
+      color: #fcd34d;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 12px rgba(252, 211, 77, 0.4);
+    }
+
+    .step1-note {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* =========================================================
+       STEP 2 — BIRTHDAY WISHES & GOKULDHAM STATS
+       ========================================================= */
+    .hbd-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 6.8vw, 40px);
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #be185d, #ec4899, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .hbd-sub {
+      font-size: 14px;
+      color: #702543;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .wishes-box {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 14px;
+    }
+
+    .gokuldham-cert {
+      background: #fdf2f8;
+      border: 1px dashed #f472b6;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin: 12px 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .cert-item {
+      font-size: 13px;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .cert-item:hover {
+      background: rgba(244, 114, 182, 0.15);
+    }
+
+    .cert-badge {
+      background: #fbcfe8;
+      color: #9f1239;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    /* =========================================================
+       STEP 3 — YES / NO QUESTION (YES DODGES, NO NEVER MOVES)
+       ========================================================= */
+    .question-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 4.5vw, 21px);
+      font-weight: 700;
+      color: #2d132c;
+      margin: 8px 0 12px 0;
+      line-height: 1.35;
+    }
+
+    .dodge-feedback {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #be185d;
+      min-height: 26px;
+      margin-bottom: 12px;
+      animation: popZoom 0.25s ease;
+    }
+
+    .buttons-arena {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      min-height: 130px;
+      padding: 10px;
+      overflow: visible;
+    }
+
+    /* YES button dodges */
+    .btn-yes-choice {
+      background: linear-gradient(135deg, #ff75a0, #e0457b);
+      color: white;
+      border: none;
+      padding: 13px 22px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(224, 69, 123, 0.35);
+      user-select: none;
+      z-index: 10;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s;
+      will-change: transform;
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+
+    .btn-yes-choice:active {
+      transform: scale(0.96);
+    }
+
+    /* NO button remains stationary in place! */
+    .btn-no-choice {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 13px 20px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      z-index: 5;
+      min-height: 48px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-no-choice:active {
+      transform: scale(0.96);
+      background: #e2e8f0;
+    }
+
+    /* =========================================================
+       STEP 4 — CANDLE AND CAKE SCENE (BIGGER, MIC, CHARACTERS)
+       ========================================================= */
+    .cake-scene-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* Characters & Animal Celebration Row */
+    .party-crew-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      width: 100%;
+      max-width: 440px;
+      margin-bottom: 10px;
+      padding: 0 10px;
+    }
+
+    .crew-bubble {
+      position: absolute;
+      top: -34px;
+      background: #ffffff;
+      color: #2d132c;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+    }
+
+    .crew-bubble.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .crew-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px 5px 0 5px;
+      border-style: solid;
+      border-color: #ffffff transparent transparent transparent;
+    }
+
+    /* Handsome Assistant Character */
+    .creator-character {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      animation: assistantBounce 2s infinite ease-in-out;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    @keyframes assistantBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .char-svg {
+      width: 65px;
+      height: 75px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    }
+
+    .assistant-quote-badge {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(254, 240, 138, 0.4);
+      color: #fef08a;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pet-cat, .pet-dog {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pet-cat {
+      animation: catWiggle 2.5s infinite ease-in-out;
+    }
+
+    @keyframes catWiggle {
+      0%, 100% { transform: rotate(-3deg) translateY(0); }
+      50% { transform: rotate(3deg) translateY(-6px); }
+    }
+
+    .pet-dog {
+      animation: dogBounce 1.8s infinite ease-in-out;
+    }
+
+    @keyframes dogBounce {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.05) translateY(-8px); }
+    }
+
+    .pet-svg {
+      width: 55px;
+      height: 60px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+
+    /* BIGGER, DELICIOUS BIRTHDAY CAKE */
+    .cake-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 12px 0 18px 0;
+      position: relative;
+    }
+
+    .candle-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: -5px;
+      z-index: 5;
+    }
+
+    .flame-element {
+      width: 22px;
+      height: 34px;
+      background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #fde047 30%, #f97316 70%, #ef4444 100%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 0 22px #fde047, 0 0 45px rgba(249, 115, 22, 0.9);
+      animation: flameFlicker 0.8s infinite alternate ease-in-out;
+      transform-origin: center bottom;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: scale(1) rotate(-3deg); }
+      100% { transform: scale(1.18) rotate(3deg); }
+    }
+
+    .flame-element.extinguished {
+      opacity: 0 !important;
+      transform: scale(0.1) translateY(-15px) !important;
+    }
+
+    .candle-stick {
+      width: 16px;
+      height: 48px;
+      border-radius: 4px;
+      background: repeating-linear-gradient(45deg, #ff75a0, #ff75a0 8px, #ffffff 8px, #ffffff 16px);
+      box-shadow: inset -2px 0 3px rgba(0,0,0,0.3);
+    }
+
+    .smoke-puff {
+      position: absolute;
+      top: -10px;
+      font-size: 24px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke-puff.rise {
+      animation: smokeDrift 1.8s forwards ease-out;
+    }
+
+    @keyframes smokeDrift {
+      0% { opacity: 0.9; transform: translateY(0) scale(0.8); }
+      100% { opacity: 0; transform: translateY(-40px) scale(2); }
+    }
+
+    /* Cake Tiers */
+    .cake-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: clamp(240px, 80vw, 290px);
+      cursor: pointer;
+    }
+
+    .tier-top {
+      width: 58%;
+      height: 48px;
+      background: linear-gradient(to bottom, #ffffff, #fbcfe8);
+      border-radius: 14px 14px 8px 8px;
+      border: 2px solid #fdf2f8;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      z-index: 3;
+    }
+
+    .tier-mid {
+      width: 78%;
+      height: 56px;
+      background: linear-gradient(to bottom, #fed7aa, #fb923c);
+      border-radius: 12px 12px 8px 8px;
+      border: 2px solid #fff7ed;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+      margin-top: -6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      z-index: 2;
+    }
+
+    .tier-base {
+      width: 98%;
+      height: 64px;
+      background: linear-gradient(to bottom, #f472b6, #db2777);
+      border-radius: 12px 12px 8px 8px;
+      border: 2px solid #fdf2f8;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+      margin-top: -6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      z-index: 1;
+    }
+
+    .cake-plate {
+      width: 104%;
+      height: 14px;
+      background: linear-gradient(to right, #94a3b8, #f8fafc, #94a3b8);
+      border-radius: 20px;
+      margin-top: -3px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+
+    /* Candle Actions */
+    .candle-actions-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+      margin-top: 14px;
+    }
+
+    .btn-mic-toggle {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fef08a;
+      border: 1px solid rgba(254, 240, 138, 0.4);
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-mic-toggle.listening {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: #10b981;
+      color: #34d399;
+      animation: pulseMic 1s infinite alternate;
+    }
+
+    @keyframes pulseMic {
+      from { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+      to { box-shadow: 0 0 20px rgba(16, 185, 129, 0.7); }
+    }
+
+    .btn-tune-fallback {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fbcfe8;
+      border: 1px solid rgba(251, 207, 232, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 2px;
+      transition: all 0.2s;
+    }
+
+    .breath-meter-container {
+      display: none;
+      width: 180px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 4px;
+      border: 1px solid rgba(254, 240, 138, 0.3);
+    }
+
+    .breath-meter-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #f43f5e);
+      border-radius: 10px;
+      transition: width 0.1s ease;
+    }
+
+    .mic-note {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: -4px;
+    }
+
+    .wish-granted-banner {
+      display: none;
+      animation: popZoom 0.5s ease forwards;
+      background: rgba(255, 255, 255, 0.95);
+      color: #2d132c;
+      border-radius: 20px;
+      padding: 18px 16px;
+      margin-top: 15px;
+      max-width: 360px;
+      width: 100%;
+    }
+
+    .wish-granted-banner.show {
+      display: block;
+    }
+
+    /* =========================================================
+       STEP 5 — THE LETTER COMES FIRST
+       ========================================================= */
+    .envelope-box {
+      width: clamp(240px, 75vw, 280px);
+      height: 170px;
+      background: #fdf2f8;
+      border: 2px solid #f9a8d4;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(224, 69, 123, 0.25);
+      margin: 18px auto;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .envelope-box:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .wax-seal {
+      width: 65px;
+      height: 65px;
+      background: radial-gradient(circle, #e11d48, #9f1239);
+      border-radius: 50%;
+      border: 2px solid #fecdd3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(159, 18, 57, 0.4);
+    }
+
+    .wax-seal span {
+      font-size: 22px;
+    }
+
+    .letter-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .letter-modal.show {
+      display: flex !important;
+      animation: fadeInScene 0.4s ease forwards;
+    }
+
+    .letter-sheet {
+      background: #fffefb;
+      color: #2d132c;
+      border-radius: 20px;
+      padding: 24px 18px;
+      max-width: 440px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      border: 2px solid #fed7aa;
+      text-align: left;
+    }
+
+    .letter-sheet h3 {
+      font-family: 'Playfair Display', serif;
+      color: #9f1239;
+      font-size: 22px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .letter-sheet p {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .letter-stamps-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 10px 0;
+      justify-content: center;
+    }
+
+    .letter-stamp {
+      background: #fdf2f8;
+      border: 1px dashed #be185d;
+      color: #9f1239;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .letter-closing {
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #be185d;
+      text-align: right;
+    }
+
+    /* =========================================================
+       STEP 6 — VIRTUAL GIFTS (EXACTLY 3 CARDS)
+       ========================================================= */
+    .gifts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 440px;
+      width: 100%;
+      margin: 14px 0 18px 0;
+    }
+
+    .gift-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 18px;
+      padding: 16px 16px;
+      text-align: left;
+      border: 2px solid #fbcfe8;
+      box-shadow: 0 6px 20px rgba(224, 69, 123, 0.12);
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .gift-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(224, 69, 123, 0.2);
+    }
+
+    .gift-card.claimed {
+      border-color: #10b981;
+      background: #f0fdf4;
+    }
+
+    .gift-icon {
+      font-size: 32px;
+      background: #fdf2f8;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gift-info h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #9f1239;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gift-claim-tag {
+      font-size: 10px;
+      font-weight: 800;
+      background: #10b981;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .gift-card.claimed .gift-claim-tag {
+      display: inline-block;
+    }
+
+    .gift-info p {
+      font-size: 12.5px;
+      color: #4b5563;
+      line-height: 1.4;
+    }
+
+    /* =========================================================
+       STEP 7 — MAGICAL WISH-RELEASE INTO THE UNIVERSE
+       ========================================================= */
+    .star-scene-container {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .celestial-sky {
+      position: absolute;
+      top: -30px;
+      right: 15px;
+      font-size: 38px;
+      filter: drop-shadow(0 0 16px rgba(253, 230, 138, 0.8));
+      animation: floatAround 7s infinite ease-in-out alternate;
+      pointer-events: none;
+    }
+
+    .star-pointing {
+      font-size: 58px;
+      margin-bottom: 4px;
+      animation: pointBounce 1.5s infinite alternate ease-in-out;
+      cursor: pointer;
+    }
+
+    @keyframes pointBounce {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.15) translateY(-8px); }
+    }
+
+    .star-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 6vw, 34px);
+      font-weight: 800;
+      color: #fef08a;
+      text-shadow: 0 0 25px rgba(254, 240, 138, 0.6);
+      margin-bottom: 6px;
+    }
+
+    .star-sub {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 320px;
+      margin-bottom: 16px;
+    }
+
+    /* Wish Note Card (Handwritten Style) */
+    .wish-note-card {
+      display: none;
+      background: linear-gradient(135deg, #fffefb, #fef3c7);
+      color: #1e1b4b;
+      border: 2px solid #fcd34d;
+      border-radius: 20px;
+      padding: 20px 22px;
+      max-width: 380px;
+      width: 90%;
+      margin: 15px auto;
+      box-shadow: 0 0 35px rgba(252, 211, 77, 0.5);
+      text-align: center;
+      position: relative;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .wish-note-card.show {
+      display: block;
+      animation: popZoom 0.5s ease forwards;
+    }
+
+    .wish-note-card.transforming {
+      transform: scale(0.08) translateY(-60px);
+      opacity: 0;
+    }
+
+    .note-header {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #b45309;
+      margin-bottom: 8px;
+    }
+
+    .note-content {
+      font-family: 'Caveat', cursive, sans-serif;
+      font-size: 24px;
+      line-height: 1.35;
+      color: #1e1b4b;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .note-seal {
+      font-size: 11px;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    /* Magical Ascending Star & Trail */
+    .ascending-star-unit {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .ascending-star-unit.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: launchIntoCosmos 2.8s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+    }
+
+    @keyframes launchIntoCosmos {
+      0% {
+        top: 52%;
+        transform: translate(-50%, -50%) scale(1.6);
+        opacity: 1;
+      }
+      40% {
+        top: 36%;
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.95;
+      }
+      80% {
+        top: 14%;
+        transform: translate(-50%, -50%) scale(0.6);
+        opacity: 0.85;
+      }
+      100% {
+        top: 4%;
+        transform: translate(-50%, -50%) scale(0.05);
+        opacity: 0;
+      }
+    }
+
+    .magic-orb-glow {
+      width: 48px;
+      height: 48px;
+      background: radial-gradient(circle, #ffffff 10%, #fef08a 40%, #fbbf24 70%, transparent 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 35px #fef08a, 0 0 70px #f59e0b;
+      animation: pulseStar 0.8s infinite alternate;
+    }
+
+    @keyframes pulseStar {
+      from { transform: scale(0.9); }
+      to { transform: scale(1.25); }
+    }
+
+    /* Constellation Display */
+    .constellation-wrapper {
+      display: none;
+      position: fixed;
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 180px;
+      pointer-events: none;
+      z-index: 80;
+    }
+
+    .constellation-wrapper.show {
+      display: block;
+      animation: fadeInScene 0.8s ease forwards;
+    }
+
+    .constellation-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 12px #38bdf8);
+    }
+
+    /* Universe Message */
+    .universe-received-box {
+      display: none;
+      position: fixed;
+      bottom: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 420px;
+      background: rgba(13, 8, 31, 0.88);
+      border: 1px solid rgba(252, 211, 77, 0.45);
+      border-radius: 24px;
+      padding: 22px 20px;
+      color: #fff;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 90;
+      text-align: center;
+    }
+
+    .universe-received-box.show {
+      display: block;
+      animation: popZoom 0.6s ease forwards;
+    }
+
+    .universe-received-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(17px, 4.5vw, 21px);
+      font-weight: 700;
+      color: #fef08a;
+      line-height: 1.4;
+      text-shadow: 0 0 20px rgba(254, 240, 138, 0.5);
+    }
+
+    .wish-input-wrap {
+      max-width: 360px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .wish-input {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 30px;
+      border: 2px solid #fcd34d;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #2d132c;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(252, 211, 77, 0.25);
+    }
+
+    .wish-input.error {
+      border-color: #ef4444;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    .wish-hint {
+      font-size: 12px;
+      color: #fcd34d;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    /* Wish Suggestion Chips */
+    .wish-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin: 12px 0 6px 0;
+    }
+
+    .wish-chip {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(252, 211, 77, 0.35);
+      color: #fef08a;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .wish-chip:hover {
+      background: rgba(252, 211, 77, 0.25);
+      transform: scale(1.04);
+    }
+
+    .dark-fade-layer {
+      position: fixed;
+      inset: 0;
+      background: #05020c;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.8s ease;
+      display: none;
+    }
+
+    .dark-fade-layer.active {
+      display: block;
+      opacity: 0.94;
+    }
+
+    /* =========================================================
+       STEP 8 — FINAL BIRTHDAY SCREEN (NO REPLAY BUTTON)
+       ========================================================= */
+    #scene-8 {
+      z-index: 60;
+      position: relative;
+    }
+
+    .final-card {
+      background: rgba(255, 255, 255, 0.96);
+      color: #2d132c;
+      border-radius: 28px;
+      padding: 34px 22px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(224, 69, 123, 0.3);
+      text-align: center;
+    }
+
+    .final-main-msg {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(23px, 5.8vw, 32px);
+      font-weight: 800;
+      color: #9f1239;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .final-sub-msg {
+      font-size: 15px;
+      line-height: 1.55;
+      color: #4b5563;
+    }
+
+    .love-shower-section {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-heart-shower {
+      background: linear-gradient(135deg, #f43f5e, #be185d);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.35);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-height: 46px;
+    }
+
+    .btn-heart-shower:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-heart-shower:active {
+      transform: scale(0.95);
+    }
+
+    .love-count-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: #be185d;
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Ambient floating decorations -->
+  <div class="bg-decorations" aria-hidden="true">
+    <span class="float-item" style="top: 10%; left: 8%;">🌸</span>
+    <span class="float-item" style="top: 25%; right: 10%; animation-delay: 1.5s;">🌷</span>
+    <span class="float-item" style="top: 55%; left: 5%; animation-delay: 3s;">✨</span>
+    <span class="float-item" style="top: 75%; right: 8%; animation-delay: 2s;">💖</span>
+  </div>
+
+  <!-- Fullscreen Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="toast-pill"></div>
+
+  <!-- Screen Darkener for Cinematic Star Release -->
+  <div class="dark-fade-layer" id="dark-fade-layer"></div>
+
+  <!-- =========================================================
+       STEP 1 — OPENING VIDEO
+       ========================================================= -->
+  <section class="scene active" id="scene-1">
+    <div class="video-wrapper" onclick="cycleVideoBadge()">
+      <video id="intro-video" autoplay loop muted playsinline webkit-playsinline>
+        <source src="videoplayback.mp4" type="video/mp4">
+        <source src="video.mp4" type="video/mp4">
+      </video>
+      <div class="target-badge" id="target-badge">TARGET IDENTIFIED 🎯</div>
+    </div>
+    <h1 class="step1-title">“Wait a second…”</h1>
+    <h2 class="step1-sub">“Isn’t it your birthday?” 🤔</h2>
+    <button class="btn-primary" onclick="goToStep(2)">
+      <span>Proceed at your own risk ⚠️✨</span>
+    </button>
+    <p class="step1-note">Warning: Uncontrollable smiling ahead!</p>
+  </section>
+
+  <!-- =========================================================
+       STEP 2 — BIRTHDAY WISHES & GOKULDHAM CERTIFICATE
+       ========================================================= -->
+  <section class="scene" id="scene-2">
+    <div class="card">
+      <div class="badge-pill">Official Birthday Notice 🎂</div>
+      <h1 class="hbd-heading">HAPPY BIRTHDAY, ASHWU! 🌸</h1>
+      <p class="hbd-sub">A very serious production made by a very unserious person.</p>
+      <p class="wishes-box">
+        Another year of unmatched drama, laughter, and being the brightest human around. 
+        Welcome to your official birthday experience! 🌷✨
+      </p>
+
+      <!-- Gokuldham Society Stats Box -->
+      <div class="gokuldham-cert">
+        <div class="cert-item" onclick="showToast('Certified best-dressed in any room! 💅')">
+          <span class="cert-badge">👗 Fashion Score</span>
+          <span><b>100/10</b> (Undisputed queen)</span>
+        </div>
+        <div class="cert-item" onclick="showToast('Main character energy 24/7! 👑')">
+          <span class="cert-badge">🎭 Drama Level</span>
+          <span><b>Legendary</b> (In the best way)</span>
+        </div>
+        <div class="cert-item" onclick="showToast('Extra caramel, zero judgment! ☕')">
+          <span class="cert-badge">☕ Coffee Need</span>
+          <span><b>Infinite</b> (Refills ready)</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="goToStep(3)">
+        <span>Accept Birthday Summons 📜✨</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STEP 3 — YES / NO BIRTHDAY QUESTION (YES DODGES, NO NEVER MOVES)
+       ========================================================= -->
+  <section class="scene" id="scene-3">
+    <div class="card">
+      <div class="badge-pill" style="color: #b91c1c; border-color: #fecaca; background: #fef2f2;">⚠️ Gokuldham Society Inquiry</div>
+      <h2 class="question-title">
+        “Is it actually your birthday, or have we all gathered here for no reason?”
+      </h2>
+      <div class="dodge-feedback" id="dodge-feedback">
+        Choose wisely below... 👀
+      </div>
+      <div class="buttons-arena" id="buttons-arena">
+        <!-- YES BUTTON DODGES! -->
+        <button class="btn-yes-choice" id="btn-yes-dodge" 
+                onmouseenter="dodgeYesButton(event)" 
+                ontouchstart="dodgeYesButton(event)" 
+                onpointerdown="dodgeYesButton(event)" 
+                onclick="chooseYes()">
+          YES, obviously 💅
+        </button>
+        <!-- NO BUTTON NEVER MOVES! STATIONARY IN PLACE! -->
+        <button class="btn-no-choice" id="btn-no-choice" onclick="chooseNo()">
+          NO 🙄
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STEP 4 — CANDLE AND CAKE SCENE (BIGGER, MIC, CHARACTERS)
+       ========================================================= -->
+  <section class="scene" id="scene-4">
+    <div class="cake-scene-content">
+      <div class="badge-pill" style="color: #fcd34d; background: rgba(255,255,255,0.1); border-color: rgba(252, 211, 77, 0.3);">🕯️ Candlelight Moment</div>
+      
+      <!-- Handsome Assistant Line -->
+      <div class="assistant-quote-badge" id="assistant-quote-badge" onclick="tapAssistant()">
+        “Your handsome birthday assistant has arrived. Try to stay calm. 😎”
+      </div>
+
+      <!-- Animated Crew: Cat, Handsome Assistant, Dog -->
+      <div class="party-crew-row">
+        <!-- Cute Animated Cat -->
+        <div class="pet-cat" id="pet-cat" title="Celebration Cat 🐱" onclick="tapCat()">
+          <div class="crew-bubble" id="cat-bubble">Meow! 🐾</div>
+          <svg class="pet-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="65" rx="25" ry="22" fill="#fed7aa" />
+            <circle cx="50" cy="40" r="20" fill="#fed7aa" />
+            <polygon points="35,30 30,12 45,24" fill="#fb923c" />
+            <polygon points="65,30 70,12 55,24" fill="#fb923c" />
+            <polygon points="50,10 42,28 58,28" fill="#ec4899" />
+            <circle cx="50" cy="8" r="3" fill="#fde047" />
+            <circle cx="43" cy="38" r="3" fill="#1f2937" />
+            <circle cx="57" cy="38" r="3" fill="#1f2937" />
+            <polygon points="50,44 47,42 53,42" fill="#f43f5e" />
+            <line x1="32" y1="42" x2="22" y2="40" stroke="#9ca3af" stroke-width="1.5" />
+            <line x1="32" y1="46" x2="22" y2="48" stroke="#9ca3af" stroke-width="1.5" />
+            <line x1="68" y1="42" x2="78" y2="40" stroke="#9ca3af" stroke-width="1.5" />
+            <line x1="68" y1="46" x2="78" y2="48" stroke="#9ca3af" stroke-width="1.5" />
+          </svg>
+        </div>
+
+        <!-- Handsome Assistant Character (Creator) -->
+        <div class="creator-character" id="creator-character" title="Handsome Birthday Assistant 😎" onclick="tapAssistant()">
+          <div class="crew-bubble" id="assistant-bubble">At your service! 😎</div>
+          <svg class="char-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30,70 L70,70 L80,120 L20,120 Z" fill="#1e1b4b" />
+            <polygon points="42,70 58,70 50,90" fill="#ffffff" />
+            <circle cx="38" cy="80" r="4" fill="#f43f5e" />
+            <circle cx="50" cy="42" r="20" fill="#fcd34d" />
+            <path d="M28,38 C28,18 45,15 62,20 C72,23 72,32 70,38 C66,24 50,22 36,32 Z" fill="#312e81" />
+            <polygon points="46,14 36,26 56,26" fill="#f59e0b" />
+            <circle cx="46" cy="12" r="2.5" fill="#f43f5e" />
+            <rect x="33" y="38" width="14" height="9" rx="2" fill="#0f172a" />
+            <rect x="53" y="38" width="14" height="9" rx="2" fill="#0f172a" />
+            <line x1="47" y1="42" x2="53" y2="42" stroke="#0f172a" stroke-width="2.5" />
+            <path d="M44,52 Q50,58 56,52" stroke="#1f2937" stroke-width="2" fill="none" />
+          </svg>
+        </div>
+
+        <!-- Cute Celebration Puppy -->
+        <div class="pet-dog" id="pet-dog" title="Celebration Puppy 🐶" onclick="tapDog()">
+          <div class="crew-bubble" id="dog-bubble">Woof! 🐶</div>
+          <svg class="pet-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="68" rx="26" ry="20" fill="#fef08a" />
+            <circle cx="50" cy="42" r="20" fill="#fef08a" />
+            <ellipse cx="28" cy="44" rx="8" ry="16" fill="#f59e0b" transform="rotate(-15 28 44)" />
+            <ellipse cx="72" cy="44" rx="8" ry="16" fill="#f59e0b" transform="rotate(15 72 44)" />
+            <polygon points="50,12 42,30 58,30" fill="#38bdf8" />
+            <circle cx="50" cy="10" r="3" fill="#f43f5e" />
+            <circle cx="43" cy="40" r="3" fill="#1f2937" />
+            <circle cx="57" cy="40" r="3" fill="#1f2937" />
+            <ellipse cx="50" cy="48" rx="4" ry="3" fill="#1f2937" />
+            <path d="M48,51 C48,55 52,55 52,51" stroke="#1f2937" stroke-width="1.5" fill="#f43f5e" />
+          </svg>
+        </div>
+      </div>
+
+      <h1 style="font-size: 26px; margin: 4px 0 8px 0; color: #fff; font-family: 'Playfair Display', serif;">
+        Make a wish, Ashwu. 🕯️
+      </h1>
+
+      <!-- SUBSTANTIALLY BIGGER BIRTHDAY CAKE -->
+      <div class="cake-stage">
+        <div class="candle-unit" onclick="blowCandleManual()">
+          <div class="flame-element" id="cake-flame"></div>
+          <div class="smoke-puff" id="smoke-puff">💨</div>
+          <div class="candle-stick"></div>
+        </div>
+        <div class="cake-body" onclick="tapCake()">
+          <div class="tier-top" id="tier-top">🍓 ✨ 🍓 ✨ 🍓</div>
+          <div class="tier-mid" id="tier-mid">🌸 🧁 🌸 🧁 🌸 🧁 🌸</div>
+          <div class="tier-base" id="tier-base">✨ 💖 ✨ 💖 ✨ 💖 ✨</div>
+          <div class="cake-plate"></div>
+        </div>
+      </div>
+
+      <!-- Actions: Mic Blow & Fallback Button & Music Fallback -->
+      <div class="candle-actions-row">
+        <button class="btn-mic-toggle" id="btn-enable-mic" onclick="enableMicrophone()">
+          <span>🎙️ Enable microphone to blow</span>
+        </button>
+
+        <!-- Dynamic Breath Meter -->
+        <div class="breath-meter-container" id="breath-meter-wrap">
+          <div class="breath-meter-bar" id="breath-meter-bar"></div>
+        </div>
+
+        <span class="mic-note" id="mic-status">Tap to blow into phone mic (works on localhost/HTTPS)</span>
+
+        <button class="btn-primary" id="btn-blow-fallback" onclick="blowCandleManual()">
+          <span>Blow out the candle 🕯️</span>
+        </button>
+
+        <!-- Birthday Tune Fallback Button -->
+        <button class="btn-tune-fallback" id="btn-play-tune" onclick="playHappyBirthdayTune(true)">
+          <span>🎵 Play birthday tune</span>
+        </button>
+      </div>
+
+      <!-- Wish granted celebration banner -->
+      <div class="wish-granted-banner" id="wish-banner">
+        <div style="font-size: 32px; margin-bottom: 6px;">✨ 🎂 🌟</div>
+        <h3 style="font-size: 18px; font-weight: 800; color: #9f1239; margin-bottom: 6px;">
+          Your wish is on its way to the universe. 🤍
+        </h3>
+        <p style="font-size: 13.5px; color: #4b5563; margin-bottom: 12px;">
+          May this year bring you all the peace, joy, and delicious treats you deserve! 🌷
+        </p>
+        <button class="btn-primary" onclick="goToStep(5)">
+          <span>Open your letter 💌</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STEP 5 — THE LETTER COMES FIRST
+       ========================================================= -->
+  <section class="scene" id="scene-5">
+    <div class="badge-pill">💌 Confidential Delivery</div>
+    <h1 class="hbd-heading" style="font-size: 30px;">A Letter for Ashwu</h1>
+    <p class="hbd-sub">Tap the wax seal to open your letter!</p>
+
+    <div class="envelope-box" id="envelope-box" onclick="openLetterModal()">
+      <div class="wax-seal">
+        <span>💌</span>
+        FOR ASHWU
+      </div>
+    </div>
+    <button class="btn-primary" onclick="openLetterModal()">
+      <span>Open your letter 💌</span>
+    </button>
+  </section>
+
+  <!-- =========================================================
+       STEP 6 — VIRTUAL GIFTS (EXACTLY 3 SEPARATE CARDS)
+       ========================================================= -->
+  <section class="scene" id="scene-6">
+    <div class="card" style="max-width: 440px;">
+      <div class="badge-pill">🎁 Official Privileges</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; color: #9f1239; margin-bottom: 4px;">
+        Here, a few virtual gifts for you 🎁
+      </h2>
+      <p style="font-size: 13px; color: #6b7280; margin-bottom: 14px;">
+        Tap each card to claim your official lifetime privileges!
+      </p>
+
+      <div class="gifts-container">
+        <!-- Gift 1: Unlimited Coffee -->
+        <div class="gift-card" id="gift-card-1" onclick="claimGift(1)">
+          <div class="gift-icon">☕</div>
+          <div class="gift-info">
+            <h4>
+              <span>Unlimited Coffee</span>
+              <span class="gift-claim-tag" id="gift-tag-1">CLAIMED ✅</span>
+            </h4>
+            <p>“Your personal lifetime coffee subscription. Unlimited refills, zero judgement, available whenever you need your caffeine fix.”</p>
+          </div>
+        </div>
+
+        <!-- Gift 2: Always Right, 24/7 -->
+        <div class="gift-card" id="gift-card-2" onclick="claimGift(2)">
+          <div class="gift-icon">👑</div>
+          <div class="gift-info">
+            <h4>
+              <span>Always Right, 24/7</span>
+              <span class="gift-claim-tag" id="gift-tag-2">CLAIMED ✅</span>
+            </h4>
+            <p>“An official certificate confirming that Ashwu is ALWAYS right. Even when the evidence says otherwise. The court is adjourned. 😂”</p>
+          </div>
+        </div>
+
+        <!-- Gift 3: Emergency Gossip Coupon -->
+        <div class="gift-card" id="gift-card-3" onclick="claimGift(3)">
+          <div class="gift-icon">🫖</div>
+          <div class="gift-info">
+            <h4>
+              <span>Emergency Gossip Coupon</span>
+              <span class="gift-claim-tag" id="gift-tag-3">CLAIMED ✅</span>
+            </h4>
+            <p>“Redeem this coupon for one unlimited gossip session. Includes dramatic reactions, ‘GIRLLLL, YOU WON'T BELIEVE THIS’, and absolutely confidential tea. Valid 24/7. 👀”</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="goToStep(7)">
+        <span>One last surprise →</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STEP 7 — MAGICAL WISH-RELEASE INTO THE UNIVERSE
+       ========================================================= -->
+  <section class="scene" id="scene-7">
+    <div class="star-scene-container">
+      <div class="celestial-sky">🌙</div>
+
+      <div class="star-pointing" onclick="tapStarCompliment()">🫵</div>
+      <h2 class="star-heading">Today's star is YOU 🫵</h2>
+      <p class="star-sub">This finger is pointing at you, madam. Obviously, you're the star. 🫵</p>
+
+      <!-- Handwritten Glow Wish Note (Revealed upon submit) -->
+      <div class="wish-note-card" id="wish-note-card">
+        <div class="note-header">✨ ASHWU'S SACRED WISH ✨</div>
+        <div class="note-content" id="note-wish-display">“...”</div>
+        <div class="note-seal">💫 Ready to be released into the cosmos 💫</div>
+      </div>
+
+      <!-- Quick Wish Suggestion Chips -->
+      <div class="wish-chips-row" id="wish-chips-row">
+        <span class="wish-chip" onclick="fillWish('A year of peace, success & zero drama 🌸')">🌸 Peace & Success</span>
+        <span class="wish-chip" onclick="fillWish('Infinite iced lattes and good hair days ☕✨')">☕ Endless Coffee</span>
+        <span class="wish-chip" onclick="fillWish('Wardrobe full of iconic new outfits 👗💅')">👗 Dream Fits</span>
+      </div>
+
+      <div class="wish-input-wrap" id="wish-input-wrap">
+        <input type="text" id="star-wish-input" class="wish-input" placeholder="What's one wish you want the universe to hear?" maxlength="140">
+        <div class="wish-hint" id="wish-hint"></div>
+        <button class="btn-primary" id="btn-release-star" onclick="releaseStarIntoUniverse()">
+          <span>Release my wish into the universe ✨</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Ascending Star Unit (Transforms from Note & Flies Up) -->
+    <div class="ascending-star-unit" id="ascending-star-unit">
+      <div class="magic-orb-glow"></div>
+    </div>
+
+    <!-- Constellation Canvas & Lines in the Sky -->
+    <div class="constellation-wrapper" id="constellation-wrapper">
+      <svg class="constellation-svg" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Constellation star lines forming a heart/crown constellation -->
+        <polyline points="40,90 90,40 140,80 190,40 240,90 140,150 40,90" 
+                  fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 2" />
+        <circle cx="40" cy="90" r="4" fill="#ffffff" />
+        <circle cx="90" cy="40" r="5" fill="#fef08a" />
+        <circle cx="140" cy="80" r="6" fill="#fef08a" />
+        <circle cx="190" cy="40" r="5" fill="#fef08a" />
+        <circle cx="240" cy="90" r="4" fill="#ffffff" />
+        <circle cx="140" cy="150" r="5" fill="#38bdf8" />
+      </svg>
+    </div>
+
+    <!-- Message when Wish is Received by Universe -->
+    <div class="universe-received-box" id="universe-received-box">
+      <div style="font-size: 28px; margin-bottom: 8px;">🌌 ⭐ ✨</div>
+      <h2 class="universe-received-text">
+        “Wish received by the universe. Now let the magic find its way to you. ✨”
+      </h2>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STEP 8 — FINAL BIRTHDAY SCREEN (NO REPLAY BUTTON)
+       ========================================================= -->
+  <section class="scene" id="scene-8">
+    <div class="final-card">
+      <div style="font-size: 44px; margin-bottom: 12px;">👑 🌸 ✨ 🎂</div>
+      <h1 class="final-main-msg">Happiest Birthday, Babygurll 🤍🎂</h1>
+      <p class="final-sub-msg">
+        Keep shining, keep slaying, and never let the Gokuldham fashion committee down. 💅✨
+      </p>
+
+      <!-- Wholesome Interactive Love Shower -->
+      <div class="love-shower-section">
+        <button class="btn-heart-shower" onclick="showerLoveHearts(event)">
+          <span>Tap for Birthday Hugs & Love! 💖✨</span>
+        </button>
+        <div class="love-count-badge" id="love-count-badge">
+          Birthday Love Delivered: 100% 💕
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       MODAL: THE BIRTHDAY LETTER (STEP 5 MODAL)
+       ========================================================= -->
+  <div class="letter-modal" id="letter-modal">
+    <div class="letter-sheet">
+      <h3>Dearest Ashwu, 🌷</h3>
+      <p>Another 365 days around the sun, and you continue to be one of the brightest, funniest, and most wonderfully chaotic humans around.</p>
+      <p>Thank you for bringing sooo much warmth, unmatched drama, and genuine laughs into this world. Whenever things get overwhelming or tiring, remember that you are deeply appreciated and cherished just the way you are.</p>
+      <p>I hope this year showers you with endless good moments, perfect cups of coffee, zero Monday blues, dreams coming into reality, and people who always celebrate your presence.</p>
+      <p>Keep shining, keep slaying, and don't forget to eat the biggest slice of cake today! 🍰</p>
+
+      <!-- Interactive Society Stamps -->
+      <div class="letter-stamps-row">
+        <span class="letter-stamp" onclick="showToast('Official seal signed by all Gokuldham residents! 📜')">💌 Gokuldham Approved</span>
+        <span class="letter-stamp" onclick="showToast('Slaying since Day 1! 💅')">👑 Fashion Icon Award</span>
+        <span class="letter-stamp" onclick="showToast('Valid for eternity with endless laughter! ⭐')">⭐ VIP Bestie Seal</span>
+      </div>
+
+      <div class="letter-closing">
+        Always cheering for you,<br>
+        YOU ARE REALLY A SPECIAL GIRL🫡💕
+      </div>
+      <button class="btn-primary" style="width: 100%; margin-top: 20px;" onclick="closeLetterAndGoToGifts()">
+        <span>One last little thing →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       JAVASCRIPT CONTROLLER
+       ========================================================= -->
+  <script>
+    let currentStep = 1;
+    let yesDodgeCount = 0;
+    let noClickCount = 0;
+    let isCandleBlown = false;
+    let isStarReleasing = false;
+    let loveCount = 100;
+    let videoBadgeIndex = 0;
+    let toastTimeout = null;
+
+    // Web Audio Synthesizer
+    let audioCtx = null;
+    let activeBirthdayOscillators = [];
+    let isBirthdayTunePlaying = false;
+    let hasBirthdayTunePlayed = false;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioClass) {
+          audioCtx = new AudioClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function playNote(freq, type = 'sine', duration = 0.15, gainVal = 0.12) {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // "HAPPY BIRTHDAY TO YOU" MUSIC-BOX SYNTHESIZER
+    // =========================================================
+    const NOTE_FREQS = {
+      'G4': 392.00, 'A4': 440.00, 'B4': 493.88,
+      'C5': 523.25, 'D5': 587.33, 'E5': 659.25,
+      'F5': 698.46, 'G5': 783.99
+    };
+
+    const BIRTHDAY_MELODY = [
+      { note: 'G4', beats: 0.75 }, { note: 'G4', beats: 0.25 },
+      { note: 'A4', beats: 1.0 },  { note: 'G4', beats: 1.0 },
+      { note: 'C5', beats: 1.0 },  { note: 'B4', beats: 2.0 },
+      { note: null, beats: 0.4 },
+
+      { note: 'G4', beats: 0.75 }, { note: 'G4', beats: 0.25 },
+      { note: 'A4', beats: 1.0 },  { note: 'G4', beats: 1.0 },
+      { note: 'D5', beats: 1.0 },  { note: 'C5', beats: 2.0 },
+      { note: null, beats: 0.4 },
+
+      { note: 'G4', beats: 0.75 }, { note: 'G4', beats: 0.25 },
+      { note: 'G5', beats: 1.0 },  { note: 'E5', beats: 1.0 },
+      { note: 'C5', beats: 1.0 },  { note: 'B4', beats: 1.0 },
+      { note: 'A4', beats: 2.0 },
+      { note: null, beats: 0.4 },
+
+      { note: 'F5', beats: 0.75 }, { note: 'F5', beats: 0.25 },
+      { note: 'E5', beats: 1.0 },  { note: 'C5', beats: 1.0 },
+      { note: 'D5', beats: 1.0 },  { note: 'C5', beats: 2.5 }
+    ];
+
+    function playHappyBirthdayTune(forcePlay = false) {
+      if (isBirthdayTunePlaying) return;
+      if (hasBirthdayTunePlayed && !forcePlay) return;
+
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        isBirthdayTunePlaying = true;
+        hasBirthdayTunePlayed = true;
+        activeBirthdayOscillators = [];
+
+        const tempo = 0.46; // Seconds per beat
+        let startTime = ctx.currentTime + 0.1;
+
+        BIRTHDAY_MELODY.forEach(item => {
+          if (item.note && NOTE_FREQS[item.note]) {
+            const freq = NOTE_FREQS[item.note];
+            const dur = item.beats * tempo;
+
+            // Voice 1: Triangle for warm body
+            const osc1 = ctx.createOscillator();
+            const gain1 = ctx.createGain();
+            osc1.type = 'triangle';
+            osc1.frequency.setValueAtTime(freq, startTime);
+            gain1.gain.setValueAtTime(0.18, startTime);
+            gain1.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+            osc1.connect(gain1);
+            gain1.connect(ctx.destination);
+
+            // Voice 2: Sine one octave higher for music-box chime
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(freq * 2, startTime);
+            gain2.gain.setValueAtTime(0.06, startTime);
+            gain2.gain.exponentialRampToValueAtTime(0.001, startTime + dur * 0.7);
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+
+            osc1.start(startTime);
+            osc1.stop(startTime + dur);
+            osc2.start(startTime);
+            osc2.stop(startTime + dur);
+
+            activeBirthdayOscillators.push(osc1, osc2);
+          }
+          startTime += item.beats * tempo;
+        });
+
+        // Reset playing state after melody completes
+        const totalDuration = (startTime - ctx.currentTime) * 1000;
+        setTimeout(() => {
+          isBirthdayTunePlaying = false;
+        }, totalDuration);
+      } catch (err) {
+        console.warn("Audio playback notice:", err);
+        isBirthdayTunePlaying = false;
+      }
+    }
+
+    function stopHappyBirthdayTune() {
+      activeBirthdayOscillators.forEach(osc => {
+        try {
+          osc.stop();
+        } catch(e) {}
+      });
+      activeBirthdayOscillators = [];
+      isBirthdayTunePlaying = false;
+    }
+
+    function showToast(text) {
+      playNote(620, 'sine', 0.12, 0.08);
+      const toast = document.getElementById('toast-pill');
+      if (!toast) return;
+      toast.textContent = text;
+      toast.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // Global Interactive Tap / Click Sparkles
+    document.addEventListener('pointerdown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      spawnTapSparkle(e.clientX, e.clientY);
+    });
+
+    function spawnTapSparkle(x, y) {
+      const emojis = ['✨', '🌸', '💖', '⭐', '🌷'];
+      const el = document.createElement('div');
+      el.className = 'tap-sparkle';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 30 + Math.random() * 40;
+      el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+      el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 850);
+    }
+
+    // Fullscreen Confetti Engine
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let confettiParticles = [];
+    let confettiAnimId = null;
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function launchConfetti(count = 70) {
+      if (!canvas || !ctx) return;
+      const colors = ['#ff75a0', '#f43f5e', '#fcd34d', '#38bdf8', '#a855f7', '#ffffff'];
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 150,
+          y: canvas.height * 0.4,
+          vx: (Math.random() - 0.5) * 14,
+          vy: -Math.random() * 12 - 4,
+          size: Math.random() * 8 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 12,
+          alpha: 1,
+          decay: 0.007 + Math.random() * 0.006
+        });
+      }
+      if (!confettiAnimId) {
+        animateConfetti();
+      }
+    }
+
+    function animateConfetti() {
+      if (!ctx || confettiParticles.length === 0) {
+        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiAnimId = null;
+        return;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiParticles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35;
+        p.vx *= 0.98;
+        p.rotation += p.vRot;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          confettiParticles.splice(idx, 1);
+          return;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        ctx.restore();
+      });
+
+      confettiAnimId = requestAnimationFrame(animateConfetti);
+    }
+
+    // Step navigation controller
+    function goToStep(stepNum) {
+      currentStep = stepNum;
+      playNote(750, 'sine', 0.1, 0.1);
+
+      if (stepNum !== 4) {
+        stopMicrophone();
+        stopHappyBirthdayTune();
+      }
+
+      document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('scene-' + stepNum);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      if (stepNum !== 7) {
+        const darkLayer = document.getElementById('dark-fade-layer');
+        if (darkLayer) darkLayer.classList.remove('active');
+        const constellation = document.getElementById('constellation-wrapper');
+        if (constellation) constellation.classList.remove('show');
+        const universeMsg = document.getElementById('universe-received-box');
+        if (universeMsg) universeMsg.classList.remove('show');
+        const starUnit = document.getElementById('ascending-star-unit');
+        if (starUnit) starUnit.classList.remove('active');
+      }
+
+      if (stepNum === 1 || stepNum === 4 || stepNum === 7) {
+        document.body.className = 'dark-mode';
+      } else {
+        document.body.className = 'pink-mode';
+      }
+
+      if (stepNum === 1) {
+        const video = document.getElementById('intro-video');
+        if (video) video.play().catch(() => {});
+      }
+
+      // Step 4: Birthday tune starts when cake appears!
+      if (stepNum === 4) {
+        setTimeout(() => playHappyBirthdayTune(false), 250);
+      }
+
+      if (stepNum === 8) {
+        setTimeout(() => launchConfetti(80), 300);
+      }
+    }
+
+    // =========================================================
+    // STEP 1: INTERACTIVE VIDEO BADGES
+    // =========================================================
+    function cycleVideoBadge() {
+      const badges = [
+        "TARGET: Ashwu, Birthday Queen 👑",
+        "DRAMA LEVEL: 100/10 🚨",
+        "FASHION ICON: Certified 💅",
+        "GOKULDHAM STATUS: VIP Resident 🌸"
+      ];
+      videoBadgeIndex = (videoBadgeIndex + 1) % badges.length;
+      const el = document.getElementById('target-badge');
+      if (el) el.textContent = badges[videoBadgeIndex];
+      showToast(badges[videoBadgeIndex]);
+    }
+
+    // =========================================================
+    // STEP 3: THE YES BUTTON MUST DODGE! NO NEVER MOVES!
+    // =========================================================
+    function dodgeYesButton(e) {
+      if (e) {
+        e.preventDefault();
+      }
+
+      const yesBtn = document.getElementById('btn-yes-dodge');
+      const arena = document.getElementById('buttons-arena');
+      const feedback = document.getElementById('dodge-feedback');
+
+      yesDodgeCount++;
+      playNote(400 + (yesDodgeCount * 60), 'triangle', 0.1, 0.1);
+
+      const funnyDodgeLines = [
+        "Areee, too slow! 🏃💨 Catch me!",
+        "Still not fast enough! 😂 Catch YES!",
+        "Almost had it! Keep trying! 🎂",
+        "Tapu Sena is blocking the YES button! 🚨"
+      ];
+
+      // After 4 dodge attempts, stop dodging and let her click it!
+      if (yesDodgeCount >= 4) {
+        yesBtn.style.transform = 'translate(0, 0) scale(1.1)';
+        yesBtn.innerHTML = "Okay fine, you caught me! Click to get cake! 🎂💅";
+        feedback.textContent = "You caught it! Click YES to continue! 🎉";
+        showToast("YES button secured! Tap to proceed! 💅");
+        return;
+      }
+
+      feedback.textContent = funnyDodgeLines[(yesDodgeCount - 1) % funnyDodgeLines.length];
+
+      // Safe displacement within arena bounds
+      const arenaRect = arena.getBoundingClientRect();
+      const btnRect = yesBtn.getBoundingClientRect();
+      const maxX = Math.max(20, (arenaRect.width / 2) - (btnRect.width / 2) - 15);
+      const maxY = 35;
+
+      const randomX = (Math.random() - 0.5) * maxX * 1.8;
+      const randomY = (Math.random() - 0.5) * maxY * 1.8;
+      const randomDeg = (Math.random() - 0.5) * 16;
+
+      yesBtn.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomDeg}deg)`;
+    }
+
+    // NO button remains stationary in place and never moves!
+    function chooseNo() {
+      noClickCount++;
+      playNote(250, 'sawtooth', 0.15, 0.1);
+
+      const feedback = document.getElementById('dodge-feedback');
+      const funnyNoMessages = [
+        "You really thought that would work? 😂",
+        "Gokuldham committee: Nice try, rejection denied! 🚨",
+        "Areee Bapuji is watching, click YES! 👓",
+        "Sundar Lal tried to deny his birthday too... didn't work! 📦",
+        "Catch that YES button, madam! It's right there! 💅"
+      ];
+
+      feedback.textContent = funnyNoMessages[(noClickCount - 1) % funnyNoMessages.length];
+      showToast(funnyNoMessages[(noClickCount - 1) % funnyNoMessages.length]);
+    }
+
+    // Successfully clicking YES opens cake scene immediately!
+    function chooseYes() {
+      goToStep(4);
+    }
+
+    // =========================================================
+    // STEP 4: INTERACTIVE CHARACTERS & CAKE
+    // =========================================================
+    let assistantDialogueIdx = 0;
+    function tapAssistant() {
+      playNote(587.33, 'triangle', 0.25, 0.15);
+      const quotes = [
+        "“Your handsome birthday assistant has arrived. Try to stay calm. 😎”",
+        "“Yes, I spent 4 hours styling my hair for this. Thank you for noticing. 💇‍♂️✨”",
+        "“I personally tested this cake. For security reasons, obviously. 🍰”",
+        "“Don't look directly at my charm, you might get blinded. 😎”",
+        "“World-class birthday services at your command, madam! 🫡”"
+      ];
+      assistantDialogueIdx = (assistantDialogueIdx + 1) % quotes.length;
+      const quoteEl = document.getElementById('assistant-quote-badge');
+      if (quoteEl) quoteEl.textContent = quotes[assistantDialogueIdx];
+
+      const bubble = document.getElementById('assistant-bubble');
+      if (bubble) {
+        bubble.textContent = ["Stay calm! 😎", "Stylin'! 💇‍♂️", "Cake checked! 🍰", "Shining! ✨", "At your service! 🫡"][assistantDialogueIdx];
+        bubble.classList.add('show');
+        setTimeout(() => bubble.classList.remove('show'), 1600);
+      }
+    }
+
+    function tapCat() {
+      playNote(700, 'sine', 0.15, 0.12);
+      setTimeout(() => playNote(900, 'sine', 0.2, 0.1), 80);
+      const cat = document.getElementById('pet-cat');
+      if (cat) cat.style.transform = 'scale(1.2) rotate(10deg)';
+      setTimeout(() => { if (cat) cat.style.transform = ''; }, 300);
+
+      const bubble = document.getElementById('cat-bubble');
+      if (bubble) {
+        const msgs = ["Meow! 🐾", "Purr... happy birthday! 🐱", "Where is my cake? 🍰", "Ashwu is bestie! 💖"];
+        bubble.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+        bubble.classList.add('show');
+        setTimeout(() => bubble.classList.remove('show'), 1600);
+      }
+    }
+
+    function tapDog() {
+      playNote(400, 'square', 0.1, 0.08);
+      setTimeout(() => playNote(450, 'square', 0.12, 0.08), 90);
+      const dog = document.getElementById('pet-dog');
+      if (dog) dog.style.transform = 'scale(1.2) translateY(-10px)';
+      setTimeout(() => { if (dog) dog.style.transform = ''; }, 300);
+
+      const bubble = document.getElementById('dog-bubble');
+      if (bubble) {
+        const msgs = ["Woof! 🐶", "Tail wagging 1000%! 🎾", "Birthday Queen! 👑", "Best human alert! 💖"];
+        bubble.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+        bubble.classList.add('show');
+        setTimeout(() => bubble.classList.remove('show'), 1600);
+      }
+    }
+
+    function tapCake() {
+      playNote(650, 'triangle', 0.15, 0.1);
+      ['tier-top', 'tier-mid', 'tier-base'].forEach((id, idx) => {
+        const t = document.getElementById(id);
+        if (t) {
+          setTimeout(() => {
+            t.style.transform = 'scale(1.06)';
+            setTimeout(() => t.style.transform = '', 200);
+          }, idx * 60);
+        }
+      });
+      showToast('Delicious 3-Tier Birthday Cake! 🍰🍓');
+    }
+
+    // Web Audio Microphone blow detection
+    let micStream = null;
+    let micAnalyser = null;
+    let micAnimationId = null;
+    let isMicActive = false;
+    let blowEnergyAccumulator = 0;
+
+    function triggerCandleExtinguish() {
+      if (isCandleBlown) return;
+      isCandleBlown = true;
+
+      // Stop the birthday melody immediately upon candle blowout
+      stopHappyBirthdayTune();
+
+      playNote(880, 'triangle', 0.4, 0.15);
+      launchConfetti(90);
+
+      const flame = document.getElementById('cake-flame');
+      const smoke = document.getElementById('smoke-puff');
+      const banner = document.getElementById('wish-banner');
+      const btnFallback = document.getElementById('btn-blow-fallback');
+      const btnMic = document.getElementById('btn-enable-mic');
+      const btnTune = document.getElementById('btn-play-tune');
+      const micStatus = document.getElementById('mic-status');
+      const meterWrap = document.getElementById('breath-meter-wrap');
+
+      if (flame) flame.classList.add('extinguished');
+      if (smoke) smoke.classList.add('rise');
+      if (btnFallback) btnFallback.style.display = 'none';
+      if (btnMic) btnMic.style.display = 'none';
+      if (btnTune) btnTune.style.display = 'none';
+      if (meterWrap) meterWrap.style.display = 'none';
+      if (micStatus) micStatus.textContent = "Candle blown! 🎂✨";
+
+      stopMicrophone();
+
+      // Reveal wish banner with "Your wish is on its way to the universe. 🤍"
+      setTimeout(() => {
+        if (banner) banner.classList.add('show');
+      }, 500);
+
+      // Automatic continuation to letter after celebration
+      setTimeout(() => {
+        if (currentStep === 4) {
+          goToStep(5);
+        }
+      }, 2800);
+    }
+
+    function blowCandleManual() {
+      triggerCandleExtinguish();
+    }
+
+    async function enableMicrophone() {
+      const statusEl = document.getElementById('mic-status');
+      const btnMic = document.getElementById('btn-enable-mic');
+      const meterWrap = document.getElementById('breath-meter-wrap');
+
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const ctx = getAudioContext();
+        if (!ctx) throw new Error('Web Audio not supported');
+
+        const source = ctx.createMediaStreamSource(micStream);
+        micAnalyser = ctx.createAnalyser();
+        micAnalyser.fftSize = 256;
+        source.connect(micAnalyser);
+
+        isMicActive = true;
+        if (statusEl) statusEl.textContent = "🎙️ Listening... Blow directly on your phone mic!";
+        if (btnMic) {
+          btnMic.classList.add('listening');
+          btnMic.innerHTML = "<span>🎙️ Listening... Blow now! 💨</span>";
+        }
+        if (meterWrap) meterWrap.style.display = 'block';
+
+        detectMicBlow();
+      } catch (err) {
+        console.warn("Microphone access could not be initialized:", err);
+        if (statusEl) statusEl.textContent = "Mic permission not available. Use the button below! 🕯️";
+      }
+    }
+
+    function detectMicBlow() {
+      if (!isMicActive || !micAnalyser || isCandleBlown) return;
+
+      const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
+      micAnalyser.getByteFrequencyData(dataArray);
+
+      let sum = 0;
+      for (let i = 2; i < 28; i++) {
+        sum += dataArray[i];
+      }
+      const avg = sum / 26;
+
+      const meterBar = document.getElementById('breath-meter-bar');
+      if (meterBar) {
+        const pct = Math.min(100, Math.max(0, (avg / 65) * 100));
+        meterBar.style.width = pct + '%';
+      }
+
+      if (avg > 55) {
+        blowEnergyAccumulator++;
+        const flame = document.getElementById('cake-flame');
+        if (flame) {
+          flame.style.transform = `scale(${Math.max(0.3, 1 - (blowEnergyAccumulator * 0.2))}) skewX(${Math.random() * 24 - 12}deg)`;
+        }
+
+        if (blowEnergyAccumulator >= 3) {
+          triggerCandleExtinguish();
+          return;
+        }
+      } else {
+        blowEnergyAccumulator = Math.max(0, blowEnergyAccumulator - 0.4);
+      }
+
+      micAnimationId = requestAnimationFrame(detectMicBlow);
+    }
+
+    function stopMicrophone() {
+      isMicActive = false;
+      if (micAnimationId) {
+        cancelAnimationFrame(micAnimationId);
+        micAnimationId = null;
+      }
+      if (micStream) {
+        micStream.getTracks().forEach(track => track.stop());
+        micStream = null;
+      }
+    }
+
+    // =========================================================
+    // STEP 5: LETTER MODAL
+    // =========================================================
+    function openLetterModal() {
+      playNote(880, 'sine', 0.2, 0.1);
+      document.getElementById('letter-modal').classList.add('show');
+    }
+
+    function closeLetterAndGoToGifts() {
+      document.getElementById('letter-modal').classList.remove('show');
+      goToStep(6);
+    }
+
+    // =========================================================
+    // STEP 6: VIRTUAL GIFTS (EXACTLY 3 CARDS)
+    // =========================================================
+    function claimGift(id) {
+      playNote(700 + (id * 100), 'triangle', 0.25, 0.12);
+      launchConfetti(35);
+      const card = document.getElementById('gift-card-' + id);
+      if (card) card.classList.add('claimed');
+
+      const msgs = [
+        "☕ Unlimited Coffee Privilege ACTIVATED! Refill counter: ∞",
+        "👑 Always Right Privilege ACTIVATED! Court dismissed!",
+        "🫖 Emergency Gossip Coupon REDEEMED! Popcorn ready!"
+      ];
+      showToast(msgs[id - 1]);
+    }
+
+    // =========================================================
+    // STEP 7: MAGICAL WISH RELEASE EXPERIENCE
+    // =========================================================
+    function tapStarCompliment() {
+      playNote(987.77, 'sine', 0.2, 0.12);
+      const compliments = [
+        "✨ Main character energy detected!",
+        "✨ Certified brightest human in the room!",
+        "✨ No photo needed, your aura is already 4K HDR!",
+        "✨ Slaying since day one!"
+      ];
+      showToast(compliments[Math.floor(Math.random() * compliments.length)]);
+    }
+
+    function fillWish(text) {
+      const input = document.getElementById('star-wish-input');
+      if (input) {
+        input.value = text;
+        playNote(784, 'sine', 0.1, 0.08);
+      }
+    }
+
+    function releaseStarIntoUniverse() {
+      if (isStarReleasing) return;
+
+      const input = document.getElementById('star-wish-input');
+      const hint = document.getElementById('wish-hint');
+      const wishText = input ? input.value.trim() : '';
+
+      // 1. Validate that input contains text. Empty input must not start animation.
+      if (!wishText) {
+        if (input) {
+          input.classList.add('error');
+          setTimeout(() => input.classList.remove('error'), 600);
+        }
+        if (hint) hint.textContent = "Please write your wish first so the universe can hear it! ✨";
+        playNote(220, 'sawtooth', 0.2, 0.1);
+        return;
+      }
+
+      if (hint) hint.textContent = "";
+      isStarReleasing = true;
+
+      // Hide input controls
+      const inputWrap = document.getElementById('wish-input-wrap');
+      const chipsRow = document.getElementById('wish-chips-row');
+      if (inputWrap) inputWrap.style.display = 'none';
+      if (chipsRow) chipsRow.style.display = 'none';
+
+      // 2. Display her wish inside softly glowing handwritten wish note
+      const noteCard = document.getElementById('wish-note-card');
+      const noteText = document.getElementById('note-wish-display');
+      if (noteText) noteText.textContent = `“${wishText}”`;
+      if (noteCard) noteCard.classList.add('show');
+
+      // Play gentle affirmation chime
+      playNote(523.25, 'triangle', 0.3, 0.15);
+      setTimeout(() => playNote(659.25, 'sine', 0.3, 0.12), 150);
+
+      // 3. Animate note transforming into glowing light orb
+      setTimeout(() => {
+        if (noteCard) noteCard.classList.add('transforming');
+
+        // Darken scene into deep cosmos
+        const darkLayer = document.getElementById('dark-fade-layer');
+        if (darkLayer) darkLayer.classList.add('active');
+
+        // 4. Launch that light upward into the night sky along a visible path
+        const starUnit = document.getElementById('ascending-star-unit');
+        if (starUnit) starUnit.classList.add('active');
+
+        // Cosmic ascending arpeggio
+        [440, 554.37, 659.25, 880, 1108.73, 1318.51, 1760].forEach((freq, idx) => {
+          setTimeout(() => playNote(freq, 'sine', 0.35, 0.12), idx * 130);
+        });
+
+        // 5. Spawn sparkling trail behind the star as it travels
+        const trailTimer = setInterval(() => {
+          if (!starUnit) return;
+          const rect = starUnit.getBoundingClientRect();
+          spawnTapSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }, 160);
+
+        setTimeout(() => clearInterval(trailTimer), 2200);
+
+        // 6 & 7. Surrounding stars light up and Constellation appears
+        setTimeout(() => {
+          const constellation = document.getElementById('constellation-wrapper');
+          if (constellation) constellation.classList.add('show');
+          launchConfetti(40);
+        }, 1200);
+
+        // 8. Display message: “Wish received by the universe. Now let the magic find its way to you. ✨”
+        setTimeout(() => {
+          const universeMsg = document.getElementById('universe-received-box');
+          if (universeMsg) universeMsg.classList.add('show');
+          playNote(1046.50, 'sine', 0.6, 0.15);
+        }, 1800);
+
+        // 9. Hold moment for a few seconds before revealing final birthday screen
+        setTimeout(() => {
+          const darkLayer = document.getElementById('dark-fade-layer');
+          if (darkLayer) darkLayer.classList.remove('active');
+          const constellation = document.getElementById('constellation-wrapper');
+          if (constellation) constellation.classList.remove('show');
+          const universeMsg = document.getElementById('universe-received-box');
+          if (universeMsg) universeMsg.classList.remove('show');
+          const starUnit = document.getElementById('ascending-star-unit');
+          if (starUnit) starUnit.classList.remove('active');
+          goToStep(8);
+        }, 4800);
+
+      }, 1000);
+    }
+
+    // =========================================================
+    // STEP 8: FINAL SCREEN WHOLESOME LOVE SHOWER
+    // =========================================================
+    function showerLoveHearts(e) {
+      loveCount += 25;
+      playNote(784, 'triangle', 0.25, 0.12);
+      launchConfetti(50);
+
+      const badge = document.getElementById('love-count-badge');
+      if (badge) {
+        badge.textContent = `Birthday Love Delivered: ${loveCount}% 💕`;
+      }
+
+      const clientX = e ? e.clientX : window.innerWidth / 2;
+      const clientY = e ? e.clientY : window.innerHeight / 2;
+      for (let i = 0; i < 6; i++) {
+        spawnTapSparkle(clientX + (Math.random() - 0.5) * 80, clientY + (Math.random() - 0.5) * 80);
+      }
+      showToast('Sending unlimited birthday love & hugs to Ashwu! 💖🌷');
+    }
+
+    // Autoplay video on initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById('intro-video');
+      if (video) {
+        video.play().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>

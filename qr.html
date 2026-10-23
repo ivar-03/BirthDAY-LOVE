@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Gift Card - Ashwu's Birthday Surprise 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Outfit:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 50% 20%, #ffeef5 0%, #ffd9e8 50%, #fcaecc 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      color: #2d132c;
+    }
+    .gift-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 35px 25px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(224, 69, 123, 0.25);
+      border: 3px solid #ffccd8;
+      position: relative;
+    }
+    .card-ribbon {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff75a0, #e0457b);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(224, 69, 123, 0.4);
+    }
+    .card-photo-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 15px auto 10px;
+      padding: 3px;
+      background: linear-gradient(135deg, #ff75a0, #fcd34d);
+      box-shadow: 0 4px 15px rgba(255, 117, 160, 0.35);
+    }
+    .card-photo-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 20%;
+      border: 2px solid white;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: #b91c1c;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #6b334c;
+      margin-bottom: 20px;
+    }
+    .qr-container {
+      background: #fdf2f8;
+      padding: 20px;
+      border-radius: 20px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px dashed #f472b6;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(244, 114, 182, 0.15);
+    }
+    .qr-container img, .qr-container canvas {
+      display: block;
+      border-radius: 10px;
+    }
+    .scan-note {
+      font-family: 'Caveat', cursive;
+      font-size: 24px;
+      color: #be185d;
+      margin-bottom: 15px;
+    }
+    .url-display {
+      font-family: monospace;
+      font-size: 13px;
+      background: #f8fafc;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #475569;
+      word-break: break-all;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn {
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.03);
+    }
+    .btn-open {
+      background: linear-gradient(135deg, #ff75a0, #e0457b);
+      color: white;
+      box-shadow: 0 6px 20px rgba(224, 69, 123, 0.35);
+    }
+    .btn-print {
+      background: #0f172a;
+      color: white;
+    }
+    @media print {
+      body {
+        background: white;
+      }
+      .actions, .url-display {
+        display: none;
+      }
+      .gift-card {
+        box-shadow: none;
+        border: 2px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gift-card">
+    <div class="card-ribbon">🎁 PRIVATE INVITATION</div>
+
+    <div class="card-photo-avatar">
+      <img src="ashu.jpg" alt="Ashwu">
+    </div>
+
+    <h1>Happy Birthday, Ashwu! 🌷</h1>
+    <p class="subtitle">A special interactive surprise created just for you.</p>
+
+    <div class="qr-container" id="qr-box">
+      <!-- QR Code injected here -->
+    </div>
+
+    <p class="scan-note">“Point your camera here to begin the journey ✨”</p>
+
+    <div class="url-display" id="url-box">
+      <!-- Active URL -->
+    </div>
+
+    <div class="actions">
+      <a href="index.html" class="btn btn-open">🚀 Launch Experience in Browser</a>
+      <button onclick="window.print()" class="btn btn-print">🖨️ Print Gift Card for Ashwu</button>
+    </div>
+  </div>
+
+  <script src="qrcode.min.js"></script>
+  <script>
+    // Detect URL or use Wi-Fi IP
+    let targetUrl = window.location.origin + window.location.pathname.replace('qr.html', 'index.html');
+    if (!targetUrl.startsWith('http')) {
+      targetUrl = 'http://192.168.29.44:3000/index.html';
+    }
+
+    document.getElementById('url-box').textContent = targetUrl;
+
+    new QRCode(document.getElementById('qr-box'), {
+      text: targetUrl,
+      width: 220,
+      height: 220,
+      colorDark: '#1e1b4b',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
